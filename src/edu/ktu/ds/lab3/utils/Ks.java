@@ -11,78 +11,111 @@ import java.util.Arrays;
  *
  * @author eimutis
  */
-public class Ks { // KTU system - imituojama Javos System klasė
+public class Ks
+{ // KTU system - imituojama Javos System klasė
 
     private static final BufferedReader keyboard
             = new BufferedReader(new InputStreamReader(System.in));
     private static String dataFolder = "data";
 
-    static public String giveString(String prompt) {
+    static public String giveString(String prompt)
+    {
         Ks.ou(prompt);
-        try {
+        try
+        {
             return keyboard.readLine();
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             Ks.ern("Neveikia klaviatūros srautas, darbas baigtas");
             System.exit(0);
         }
         return "";
     }
 
-    static public long giveLong(String prompt) {
-        while (true) {
+    static public long giveLong(String prompt)
+    {
+        while (true)
+        {
             String s = giveString(prompt);
-            try {
+            try
+            {
                 return Long.parseLong(s);
-            } catch (NumberFormatException e) {
+            }
+            catch (NumberFormatException e)
+            {
                 Ks.ern("Neteisingas skaičiaus formatas, pakartokite");
             }
         }
     }
 
-    static public long giveLong(String prompt, long bound1, long bound2) {
-        while (true) {
+    static public long giveLong(String prompt, long bound1, long bound2)
+    {
+        while (true)
+        {
             long a = giveLong(prompt + " tarp ribų [" + bound1 + ":" + bound2 + "]=");
 
-            if (a < bound1) {
+            if (a < bound1)
+            {
                 Ks.ern("Skaičius mažesnis nei leistina, pakartokite");
-            } else if (a > bound2) {
+            }
+            else if (a > bound2)
+            {
                 Ks.ern("Skaičius didesnis nei leistina, pakartokite");
-            } else {
+            }
+            else
+            {
                 return a;
             }
         }
     }
 
-    static public int giveInt(String prompt) {
-        while (true) {
+    static public int giveInt(String prompt)
+    {
+        while (true)
+        {
             long a = giveLong(prompt);
 
-            if (a < Integer.MIN_VALUE) {
+            if (a < Integer.MIN_VALUE)
+            {
                 Ks.ern("Skaičius mažesnis nei Integer.MIN_VALUE"
                         + ", pakartokite");
-            } else if (a > Integer.MAX_VALUE) {
+            }
+            else if (a > Integer.MAX_VALUE)
+            {
                 Ks.ern("Skaičius didesnis nei Integer.MAX_VALUE"
                         + ", pakartokite");
-            } else {
+            }
+            else
+            {
                 return (int) a;
             }
         }
     }
 
-    static public int giveInt(String prompt, int bound1, int bound2) {
+    static public int giveInt(String prompt, int bound1, int bound2)
+    {
         return (int) giveLong(prompt, bound1, bound2);
     }
 
-    static public double giveDouble(String prompt) {
-        while (true) {
+    static public double giveDouble(String prompt)
+    {
+        while (true)
+        {
             String s = giveString(prompt);
-            try {
+            try
+            {
                 return Double.parseDouble(s);
-            } catch (NumberFormatException e) {
-                if (s.contains(",")) {
+            }
+            catch (NumberFormatException e)
+            {
+                if (s.contains(","))
+                {
                     Ks.ern("Vietoje kablelio naudokite tašką"
                             + ", pakartokite");
-                } else {
+                }
+                else
+                {
                     Ks.ern("Neteisingas skaičiaus formatas"
                             + ", pakartokite");
                 }
@@ -90,21 +123,29 @@ public class Ks { // KTU system - imituojama Javos System klasė
         }
     }
 
-    static public double giveDouble(String prompt, double bound1, double bound2) {
-        while (true) {
+    static public double giveDouble(String prompt, double bound1, double bound2)
+    {
+        while (true)
+        {
             double a = giveDouble(prompt + " tarp ribų [" + bound1 + ":" + bound2 + "]=");
 
-            if (a < bound1) {
+            if (a < bound1)
+            {
                 Ks.ern("Skaičius mažesnis nei leistina, pakartokite");
-            } else if (a > bound2) {
+            }
+            else if (a > bound2)
+            {
                 Ks.ern("Skaičius didesnis nei leistina, pakartokite");
-            } else {
+            }
+            else
+            {
                 return a;
             }
         }
     }
 
-    static public String giveFileName() {
+    static public String giveFileName()
+    {
         File dir = new File(dataFolder);
         dir.mkdir();
         oun("Jums prieinami failai " + Arrays.toString(dir.list()));
@@ -112,11 +153,13 @@ public class Ks { // KTU system - imituojama Javos System klasė
         return (fn);
     }
 
-    static public String getDataFolder() {
+    static public String getDataFolder()
+    {
         return dataFolder;
     }
 
-    static public void setDataFolder(String folderName) {
+    static public void setDataFolder(String folderName)
+    {
         dataFolder = folderName;
     }
 
@@ -126,52 +169,70 @@ public class Ks { // KTU system - imituojama Javos System klasė
     private static int errorNr;
     private static final boolean formatStartOfLine = true;
 
-    static public void ou(Object obj) {
-        if (formatStartOfLine) {
+    static public void ou(Object obj)
+    {
+        if (formatStartOfLine)
+        {
             sout.printf("%2d| %s", ++lineNr, obj);
-        } else {
+        }
+        else
+        {
             sout.println(obj);
         }
     }
 
-    static public void oun(Object obj) {
-        if (formatStartOfLine) {
+    static public void oun(Object obj)
+    {
+        if (formatStartOfLine)
+        {
             sout.printf("%2d| %s\n", ++lineNr, obj);
-        } else {
+        }
+        else
+        {
             sout.println(obj);
         }
     }
 
-    static public void ounn(Object obj) {
-        if (formatStartOfLine) {
+    static public void ounn(Object obj)
+    {
+        if (formatStartOfLine)
+        {
             sout.printf("%s\n", obj);
-        } else {
+        }
+        else
+        {
             sout.println(obj);
         }
     }
 
-    static public void oufln(String format, Object... args) {
+    static public void oufln(String format, Object... args)
+    {
         sout.printf(format, args);
         sout.println();
     }
 
-    static public void out(Object obj) {
+    static public void out(Object obj)
+    {
         sout.print(obj);
     }
 
-    static public void ouf(String format, Object... args) {
+    static public void ouf(String format, Object... args)
+    {
         sout.printf(format, args);
     }
 
-    static public void er(Object obj) {
+    static public void er(Object obj)
+    {
         serr.printf("***Klaida %d: %s", ++errorNr, obj);
     }
 
-    static public void ern(Object obj) {
+    static public void ern(Object obj)
+    {
         serr.printf("***Klaida %d: %s\n", ++errorNr, obj);
     }
 
-    static public void erf(String format, Object... args) {
+    static public void erf(String format, Object... args)
+    {
         serr.printf(format, args);
     }
 }

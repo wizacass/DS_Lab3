@@ -4,8 +4,8 @@ package edu.ktu.ds.lab3.utils;
  * @param <K>
  * @param <V>
  */
-public interface ParsableMap<K, V> extends EvaluableMap<K, V> {
-
+public interface ParsableMap<K, V> extends EvaluableMap<K, V>
+{
     V put(String dataString);
 
     void load(String filePath);

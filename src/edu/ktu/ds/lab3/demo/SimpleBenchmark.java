@@ -13,8 +13,8 @@ import java.util.concurrent.Semaphore;
 /**
  * @author eimutis
  */
-public class SimpleBenchmark {
-
+public class SimpleBenchmark
+{
     public static final String FINISH_COMMAND = "                               ";
     private static final ResourceBundle MESSAGES = ResourceBundle.getBundle("edu.ktu.ds.lab3.gui.messages");
 
@@ -32,7 +32,8 @@ public class SimpleBenchmark {
     /**
      * For console benchmark
      */
-    public SimpleBenchmark() {
+    public SimpleBenchmark()
+    {
         timekeeper = new Timekeeper(COUNTS);
     }
 
@@ -42,37 +43,49 @@ public class SimpleBenchmark {
      * @param resultsLogger
      * @param semaphore
      */
-    public SimpleBenchmark(BlockingQueue<String> resultsLogger, Semaphore semaphore) {
+    public SimpleBenchmark(BlockingQueue<String> resultsLogger, Semaphore semaphore)
+    {
         semaphore.release();
         timekeeper = new Timekeeper(COUNTS, resultsLogger, semaphore);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         executeTest();
     }
 
-    public static void executeTest() {
+    public static void executeTest()
+    {
         // suvienodiname skaičių formatus pagal LT lokalę (10-ainis kablelis)
         Locale.setDefault(new Locale("LT"));
         Ks.out("Greitaveikos tyrimas:\n");
         new SimpleBenchmark().startBenchmark();
     }
 
-    public void startBenchmark() {
-        try {
+    public void startBenchmark()
+    {
+        try
+        {
             benchmark();
-        } catch (InterruptedException e) {
+        }
+        catch (InterruptedException e)
+        {
             Thread.currentThread().interrupt();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             ex.printStackTrace(System.out);
         }
     }
 
-    public void benchmark() throws InterruptedException {
-        try {
+    public void benchmark() throws InterruptedException
+    {
+        try
+        {
             chainsSizes.add(MESSAGES.getString("maxChainLength"));
             chainsSizes.add("   kiekis      " + BENCHMARK_NAMES[0] + "   " + BENCHMARK_NAMES[1]);
-            for (int k : COUNTS) {
+            for (int k : COUNTS)
+            {
                 Car[] carsArray = CarsGenerator.generateShuffleCars(k);
                 String[] carsIdsArray = CarsGenerator.generateShuffleIds(k);
                 carsMap.clear();
@@ -80,13 +93,15 @@ public class SimpleBenchmark {
                 timekeeper.startAfterPause();
                 timekeeper.start();
 
-                for (int i = 0; i < k; i++) {
+                for (int i = 0; i < k; i++)
+                {
                     carsMap.put(carsIdsArray[i], carsArray[i]);
                 }
                 timekeeper.finish(BENCHMARK_NAMES[0]);
 
                 String str = "   " + k + "          " + carsMap.getMaxChainSize();
-                for (int i = 0; i < k; i++) {
+                for (int i = 0; i < k; i++)
+                {
                     carsMap2.put(carsIdsArray[i], carsArray[i]);
                 }
                 timekeeper.finish(BENCHMARK_NAMES[1]);
@@ -112,7 +127,9 @@ public class SimpleBenchmark {
             chainsSizes.forEach(p -> sb.append(p).append(System.lineSeparator()));
             timekeeper.logResult(sb.toString());
             timekeeper.logResult(FINISH_COMMAND);
-        } catch (ValidationException e) {
+        }
+        catch (ValidationException e)
+        {
             timekeeper.logResult(e.getMessage());
         }
     }

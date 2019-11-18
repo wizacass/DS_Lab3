@@ -7,8 +7,8 @@ package edu.ktu.ds.lab3.utils;
  * @param <K> raktas
  * @param <V> reikšmė
  */
-public interface EvaluableMap<K, V> extends Map<K, V> {
-
+public interface EvaluableMap<K, V> extends Map<K, V>
+{
     /**
      * Grąžina maksimalų grandinėlės ilgį.
      *

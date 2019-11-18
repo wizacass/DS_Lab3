@@ -8,8 +8,8 @@ import java.util.concurrent.Semaphore;
 /**
  * @author eimutis
  */
-public class Timekeeper {
-
+public class Timekeeper
+{
     private int[] tyrimoImtis;
     private long startTime;
     private final long startTimeTot;
@@ -29,9 +29,11 @@ public class Timekeeper {
 
     /**
      * For console benchmark
+     *
      * @param kiekiai
      */
-    public Timekeeper(int[] kiekiai) {
+    public Timekeeper(int[] kiekiai)
+    {
         this(kiekiai, null, null);
     }
 
@@ -42,7 +44,8 @@ public class Timekeeper {
      * @param resultsLogger
      * @param semaphore
      */
-    public Timekeeper(int[] kiekiai, BlockingQueue<String> resultsLogger, Semaphore semaphore) {
+    public Timekeeper(int[] kiekiai, BlockingQueue<String> resultsLogger, Semaphore semaphore)
+    {
         this.tyrimoImtis = kiekiai;
         this.resultsLogger = resultsLogger;
         this.semaphore = semaphore;
@@ -51,9 +54,11 @@ public class Timekeeper {
         startTimeTot = System.nanoTime();
     }
 
-    public void start() throws InterruptedException {
+    public void start() throws InterruptedException
+    {
         tyrimoInd = 0;
-        if (kiekioInd >= kiekioN) {
+        if (kiekioInd >= kiekioN)
+        {
             logResult("Duomenų kiekis keičiamas daugiau kartų nei buvo planuota");
             // System.exit(0);
         }
@@ -65,24 +70,29 @@ public class Timekeeper {
         startTime = System.nanoTime();
     }
 
-    public void startAfterPause() {
+    public void startAfterPause()
+    {
         Runtime.getRuntime().gc();
         Runtime.getRuntime().gc();
         Runtime.getRuntime().gc();
         startTime = System.nanoTime();
     }
 
-    public void finish(String vardas) throws InterruptedException {
+    public void finish(String vardas) throws InterruptedException
+    {
         double executionTime = (System.nanoTime() - startTime) / 1e9;
         sumTime += executionTime;
-        if (startTime == 0) {
+        if (startTime == 0)
+        {
             logResult("Metodas finish panaudotas be start metodo !!!\n");
             //   System.exit(0);
         }
-        if (kiekioInd == 0) {
+        if (kiekioInd == 0)
+        {
             header += String.format("%9s ", vardas);
         }
-        if (tyrimoInd >= tyrimųNmax) {
+        if (tyrimoInd >= tyrimųNmax)
+        {
             logResult("Jau atlikta daugiau tyrimų nei numatyta  !!!\n");
             //  System.exit(0);
         }
@@ -94,19 +104,23 @@ public class Timekeeper {
         startTime = System.nanoTime();
     }
 
-    public void seriesFinish() throws InterruptedException {
-        if (kiekioInd == 0) {
+    public void seriesFinish() throws InterruptedException
+    {
+        if (kiekioInd == 0)
+        {
             logResult(header + "\n");
         }
         logResult(tyrimųEilutė + "\n");
         kiekioInd++;
         tyrimųN = tyrimoInd;
-        if (kiekioInd == kiekioN) {
+        if (kiekioInd == kiekioN)
+        {
             summary();
         }
     }
 
-    private void summary() throws InterruptedException {
+    private void summary() throws InterruptedException
+    {
         StringBuilder sb = new StringBuilder();
         double totTime = (System.nanoTime() - startTimeTot) / 1e9;
         sb.append(String.format("       Bendras tyrimo laikas %8.3f sekundžių", totTime)).append("\n");
@@ -117,10 +131,12 @@ public class Timekeeper {
         sb.append("Normalizuota (santykinė) laikų lentelė\n");
         sb.append(header).append("\n");
         double d1 = laikai[0][0];
-        for (int i = 0; i < kiekioN; i++) {
+        for (int i = 0; i < kiekioN; i++)
+        {
             tyrimųEilutė = String.format(kiekioFormatas, tyrimoImtis[i],
                     tyrimoImtis[i] / tyrimoImtis[0]);
-            for (int j = 0; j < tyrimųN; j++) {
+            for (int j = 0; j < tyrimųN; j++)
+            {
                 tyrimųEilutė += String.format("%9.2f ", laikai[i][j] / d1);
             }
             sb.append(tyrimųEilutė).append("\n");
@@ -129,11 +145,15 @@ public class Timekeeper {
         logResult(sb.toString());
     }
 
-    public void logResult(String result) throws InterruptedException {
-        if (resultsLogger != null && semaphore != null) {
+    public void logResult(String result) throws InterruptedException
+    {
+        if (resultsLogger != null && semaphore != null)
+        {
             resultsLogger.put(result);
             semaphore.acquire();
-        } else {
+        }
+        else
+        {
             Ks.out(result);
         }
     }

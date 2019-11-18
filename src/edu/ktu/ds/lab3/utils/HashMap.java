@@ -11,13 +11,11 @@ import java.util.Arrays;
  *
  * @param <K> atvaizdžio raktas
  * @param <V> atvaizdžio reikšmė
- *
- * @Užduotis Peržiūrėkite ir išsiaiškinkite pateiktus metodus.
- *
  * @author darius.matulis@ktu.lt
+ * @Užduotis Peržiūrėkite ir išsiaiškinkite pateiktus metodus.
  */
-public class HashMap<K, V> implements EvaluableMap<K, V> {
-
+public class HashMap<K, V> implements EvaluableMap<K, V>
+{
     public static final int DEFAULT_INITIAL_CAPACITY = 16;
     public static final float DEFAULT_LOAD_FACTOR = 0.75f;
     public static final HashType DEFAULT_HASH_TYPE = HashType.DIVISION;
@@ -44,32 +42,39 @@ public class HashMap<K, V> implements EvaluableMap<K, V> {
     // Einamas poros indeksas maišos lentelėje
     protected int index = 0;
 
-    /* Klasėje sukurti 4 perkloti konstruktoriai, nustatantys atskirus maišos 
-     * lentelės parametrus. Jei kuris nors parametras nėra nustatomas - 
+    /* Klasėje sukurti 4 perkloti konstruktoriai, nustatantys atskirus maišos
+     * lentelės parametrus. Jei kuris nors parametras nėra nustatomas -
      * priskiriama standartinė reikšmė.
      */
-    public HashMap() {
+    public HashMap()
+    {
         this(DEFAULT_HASH_TYPE);
     }
 
-    public HashMap(HashType ht) {
+    public HashMap(HashType ht)
+    {
         this(DEFAULT_INITIAL_CAPACITY, ht);
     }
 
-    public HashMap(int initialCapacity, HashType ht) {
+    public HashMap(int initialCapacity, HashType ht)
+    {
         this(initialCapacity, DEFAULT_LOAD_FACTOR, ht);
     }
 
-    public HashMap(float loadFactor, HashType ht) {
+    public HashMap(float loadFactor, HashType ht)
+    {
         this(DEFAULT_INITIAL_CAPACITY, loadFactor, ht);
     }
 
-    public HashMap(int initialCapacity, float loadFactor, HashType ht) {
-        if (initialCapacity <= 0) {
+    public HashMap(int initialCapacity, float loadFactor, HashType ht)
+    {
+        if (initialCapacity <= 0)
+        {
             throw new IllegalArgumentException("Illegal initial capacity: " + initialCapacity);
         }
 
-        if ((loadFactor <= 0.0) || (loadFactor > 1.0)) {
+        if ((loadFactor <= 0.0) || (loadFactor > 1.0))
+        {
             throw new IllegalArgumentException("Illegal load factor: " + loadFactor);
         }
 
@@ -80,10 +85,10 @@ public class HashMap<K, V> implements EvaluableMap<K, V> {
 
     /**
      * Patikrinama ar atvaizdis yra tuščias.
-     *
      */
     @Override
-    public boolean isEmpty() {
+    public boolean isEmpty()
+    {
         return size == 0;
     }
 
@@ -93,7 +98,8 @@ public class HashMap<K, V> implements EvaluableMap<K, V> {
      * @return Grąžinamas atvaizdyje esančių porų kiekis.
      */
     @Override
-    public int size() {
+    public int size()
+    {
         return size;
     }
 
@@ -101,7 +107,8 @@ public class HashMap<K, V> implements EvaluableMap<K, V> {
      * Išvalomas atvaizdis.
      */
     @Override
-    public void clear() {
+    public void clear()
+    {
         Arrays.fill(table, null);
         size = 0;
         index = 0;
@@ -118,38 +125,48 @@ public class HashMap<K, V> implements EvaluableMap<K, V> {
      * @return Patikrinama ar pora egzistuoja atvaizdyje.
      */
     @Override
-    public boolean contains(K key) {
+    public boolean contains(K key)
+    {
         return get(key) != null;
     }
 
     /**
      * Atvaizdis papildomas nauja pora.
      *
-     * @param key raktas,
+     * @param key   raktas,
      * @param value reikšmė.
      * @return Atvaizdis papildomas nauja pora.
      */
     @Override
-    public V put(K key, V value) {
-        if (key == null || value == null) {
+    public V put(K key, V value)
+    {
+        if (key == null || value == null)
+        {
             throw new IllegalArgumentException("Key or value is null in put(Key key, Value value)");
         }
         index = hash(key, ht);
-        if (table[index] == null) {
+        if (table[index] == null)
+        {
             chainsCounter++;
         }
 
         Node<K, V> node = getInChain(key, table[index]);
-        if (node == null) {
+        if (node == null)
+        {
             table[index] = new Node<>(key, value, table[index]);
             size++;
 
-            if (size > table.length * loadFactor) {
+            if (size > table.length * loadFactor)
+            {
                 rehash(table[index]);
-            } else {
+            }
+            else
+            {
                 lastUpdatedChain = index;
             }
-        } else {
+        }
+        else
+        {
             node.value = value;
             lastUpdatedChain = index;
         }
@@ -160,13 +177,14 @@ public class HashMap<K, V> implements EvaluableMap<K, V> {
     /**
      * Grąžinama atvaizdžio poros reikšmė.
      *
-     * @return Grąžinama atvaizdžio poros reikšmė.
-     *
      * @param key raktas.
+     * @return Grąžinama atvaizdžio poros reikšmė.
      */
     @Override
-    public V get(K key) {
-        if (key == null) {
+    public V get(K key)
+    {
+        if (key == null)
+        {
             throw new IllegalArgumentException("Key is null in get(Key key)");
         }
 
@@ -182,23 +200,31 @@ public class HashMap<K, V> implements EvaluableMap<K, V> {
      * @return key raktas.
      */
     @Override
-    public V remove(K key) {
-        if (key == null) {
+    public V remove(K key)
+    {
+        if (key == null)
+        {
             throw new IllegalArgumentException("Key is null in remove(Key key)");
         }
 
         index = hash(key, ht);
         Node<K, V> previous = null;
-        for (Node<K, V> n = table[index]; n != null; n = n.next) {
-            if ((n.key).equals(key)) {
-                if (previous == null) {
+        for (Node<K, V> n = table[index]; n != null; n = n.next)
+        {
+            if ((n.key).equals(key))
+            {
+                if (previous == null)
+                {
                     table[index] = n.next;
-                } else {
+                }
+                else
+                {
                     previous.next = n.next;
                 }
                 size--;
 
-                if (table[index] == null) {
+                if (table[index] == null)
+                {
                     chainsCounter--;
                 }
                 return n.value;
@@ -213,11 +239,15 @@ public class HashMap<K, V> implements EvaluableMap<K, V> {
      *
      * @param node
      */
-    private void rehash(Node<K, V> node) {
+    private void rehash(Node<K, V> node)
+    {
         HashMap<K, V> newMap = new HashMap<>(table.length * 2, loadFactor, ht);
-        for (int i = 0; i < table.length; i++) {
-            while (table[i] != null) {
-                if (table[i].equals(node)) {
+        for (int i = 0; i < table.length; i++)
+        {
+            while (table[i] != null)
+            {
+                if (table[i].equals(node))
+                {
                     lastUpdatedChain = i;
                 }
                 newMap.put(table[i].key, table[i].value);
@@ -238,9 +268,11 @@ public class HashMap<K, V> implements EvaluableMap<K, V> {
      * @param hashType
      * @return
      */
-    private int hash(K key, HashType hashType) {
+    private int hash(K key, HashType hashType)
+    {
         int h = key.hashCode();
-        switch (hashType) {
+        switch (hashType)
+        {
             case DIVISION:
                 return Math.abs(h) % table.length;
             case MULTIPLICATION:
@@ -265,14 +297,18 @@ public class HashMap<K, V> implements EvaluableMap<K, V> {
      * @param node
      * @return
      */
-    private Node<K, V> getInChain(K key, Node<K, V> node) {
-        if (key == null) {
+    private Node<K, V> getInChain(K key, Node<K, V> node)
+    {
+        if (key == null)
+        {
             throw new IllegalArgumentException("Key is null in getInChain(Key key, Node node)");
         }
         int chainSize = 0;
-        for (Node<K, V> n = node; n != null; n = n.next) {
+        for (Node<K, V> n = node; n != null; n = n.next)
+        {
             chainSize++;
-            if ((n.key).equals(key)) {
+            if ((n.key).equals(key))
+            {
                 return n;
             }
         }
@@ -281,13 +317,16 @@ public class HashMap<K, V> implements EvaluableMap<K, V> {
     }
 
     @Override
-    public String[][] toArray() {
+    public String[][] toArray()
+    {
         String[][] result = new String[table.length][];
         int count = 0;
-        for (Node<K, V> n : table) {
+        for (Node<K, V> n : table)
+        {
             String[] list = new String[getMaxChainSize()];
             int countLocal = 0;
-            while (n != null) {
+            while (n != null)
+            {
                 list[countLocal++] = n.toString();
                 n = n.next;
             }
@@ -298,11 +337,15 @@ public class HashMap<K, V> implements EvaluableMap<K, V> {
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         StringBuilder result = new StringBuilder();
-        for (Node<K, V> node : table) {
-            if (node != null) {
-                for (Node<K, V> n = node; n != null; n = n.next) {
+        for (Node<K, V> node : table)
+        {
+            if (node != null)
+            {
+                for (Node<K, V> n = node; n != null; n = n.next)
+                {
                     result.append(n.toString()).append(System.lineSeparator());
                 }
             }
@@ -316,7 +359,8 @@ public class HashMap<K, V> implements EvaluableMap<K, V> {
      * @return Maksimalus grandinėlės ilgis.
      */
     @Override
-    public int getMaxChainSize() {
+    public int getMaxChainSize()
+    {
         return maxChainSize;
     }
 
@@ -326,7 +370,8 @@ public class HashMap<K, V> implements EvaluableMap<K, V> {
      * @return Permaišymų kiekis.
      */
     @Override
-    public int getRehashesCounter() {
+    public int getRehashesCounter()
+    {
         return rehashesCounter;
     }
 
@@ -336,7 +381,8 @@ public class HashMap<K, V> implements EvaluableMap<K, V> {
      * @return Maišos lentelės talpa.
      */
     @Override
-    public int getTableCapacity() {
+    public int getTableCapacity()
+    {
         return table.length;
     }
 
@@ -346,7 +392,8 @@ public class HashMap<K, V> implements EvaluableMap<K, V> {
      * @return Paskutinės papildytos grandinėlės indeksas.
      */
     @Override
-    public int getLastUpdatedChain() {
+    public int getLastUpdatedChain()
+    {
         return lastUpdatedChain;
     }
 
@@ -356,12 +403,13 @@ public class HashMap<K, V> implements EvaluableMap<K, V> {
      * @return Grandinėlių kiekis.
      */
     @Override
-    public int getChainsCounter() {
+    public int getChainsCounter()
+    {
         return chainsCounter;
     }
 
-    protected static class Node<K, V> {
-
+    protected static class Node<K, V>
+    {
         // Raktas        
         protected K key;
         // Reikšmė
@@ -369,17 +417,18 @@ public class HashMap<K, V> implements EvaluableMap<K, V> {
         // Rodyklė į sekantį grandinėlės mazgą
         protected Node<K, V> next;
 
-        protected Node() {
-        }
+        protected Node() { }
 
-        protected Node(K key, V value, Node<K, V> next) {
+        protected Node(K key, V value, Node<K, V> next)
+        {
             this.key = key;
             this.value = value;
             this.next = next;
         }
 
         @Override
-        public String toString() {
+        public String toString()
+        {
             return key + "=" + value;
         }
     }

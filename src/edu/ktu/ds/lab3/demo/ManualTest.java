@@ -7,14 +7,16 @@ import edu.ktu.ds.lab3.utils.ParsableMap;
 
 import java.util.Locale;
 
-public class ManualTest {
-
-    public static void main(String[] args) {
+public class ManualTest
+{
+    public static void main(String[] args)
+    {
         Locale.setDefault(Locale.US); // suvienodiname skaičių formatus
         executeTest();
     }
 
-    public static void executeTest() {
+    public static void executeTest()
+    {
         Car c1 = new Car("Renault", "Laguna", 1997, 50000, 1700);
         Car c2 = new Car("Renault", "Megane", 2001, 20000, 3500);
         Car c3 = new Car("Toyota", "Corolla", 2001, 20000, 8500.8);
@@ -31,9 +33,11 @@ public class ManualTest {
 
         // Reikšmių masyvas
         Car[] cars = {c1, c2, c3, c4, c5, c6, c7};
-        for (Car c : cars) {
+        for (Car c : cars)
+        {
             carsMap.put(carsIds[id++], c);
         }
+
         carsMap.println("Porų išsidėstymas atvaizdyje pagal raktus");
         Ks.oun("Ar egzistuoja pora atvaizdyje?");
         Ks.oun(carsMap.contains(carsIds[6]));

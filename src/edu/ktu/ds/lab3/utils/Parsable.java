@@ -6,8 +6,8 @@ package edu.ktu.ds.lab3.utils;
  * Tai yra  interfeisas, kurį turi tenkinti KTU studentų kuriamos duomenų klasės
  * Metodai užtikrina patogų duomenų suformavimą iš String eilučių
  ******************************************************************************/
-public interface Parsable<T> {
-
+public interface Parsable<T>
+{
     /**
      * Suformuoja objektą iš teksto eilutės
      *

@@ -6,8 +6,8 @@ package edu.ktu.ds.lab3.utils;
  * @param <K> Atvaizdžio poros raktas
  * @param <V> Atvaizdžio poros reikšmė
  */
-public interface Map<K, V> {
-
+public interface Map<K, V>
+{
     /**
      * Patikrinama ar atvaizdis yra tuščias.
      *
@@ -24,7 +24,6 @@ public interface Map<K, V> {
 
     /**
      * Išvalomas atvaizdis.
-     *
      */
     void clear();
 
@@ -38,7 +37,7 @@ public interface Map<K, V> {
     /**
      * Atvaizdis papildomas nauja pora.
      *
-     * @param key raktas,
+     * @param key   raktas,
      * @param value reikšmė.
      * @return Grąžinama atvaizdžio poros reikšmė.
      */

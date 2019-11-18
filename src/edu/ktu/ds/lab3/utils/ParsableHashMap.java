@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-public class ParsableHashMap<K, V extends Parsable<V>> extends HashMap<K, V> implements ParsableMap<K, V> {
-
+public class ParsableHashMap<K, V extends Parsable<V>> extends HashMap<K, V> implements ParsableMap<K, V>
+{
     private final Function<String, K> keyCreateFunction;   // funkcija bazinio rakto objekto kūrimui
     private final Function<String, V> valueCreateFunction; // funkcija bazinio reikšmės objekto kūrimui
 
@@ -24,7 +24,8 @@ public class ParsableHashMap<K, V extends Parsable<V>> extends HashMap<K, V> imp
      * @param valueCreateFunction
      */
     public ParsableHashMap(Function<String, K> keyCreateFunction,
-            Function<String, V> valueCreateFunction) {
+                           Function<String, V> valueCreateFunction)
+    {
 
         this(keyCreateFunction, valueCreateFunction, DEFAULT_HASH_TYPE);
     }
@@ -37,8 +38,9 @@ public class ParsableHashMap<K, V extends Parsable<V>> extends HashMap<K, V> imp
      * @param ht
      */
     public ParsableHashMap(Function<String, K> keyCreateFunction,
-            Function<String, V> valueCreateFunction,
-            HashType ht) {
+                           Function<String, V> valueCreateFunction,
+                           HashType ht)
+    {
 
         this(keyCreateFunction, valueCreateFunction, DEFAULT_INITIAL_CAPACITY, ht);
     }
@@ -52,9 +54,10 @@ public class ParsableHashMap<K, V extends Parsable<V>> extends HashMap<K, V> imp
      * @param ht
      */
     public ParsableHashMap(Function<String, K> keyCreateFunction,
-            Function<String, V> valueCreateFunction,
-            int initialCapacity,
-            HashType ht) {
+                           Function<String, V> valueCreateFunction,
+                           int initialCapacity,
+                           HashType ht)
+    {
 
         this(keyCreateFunction, valueCreateFunction, initialCapacity, DEFAULT_LOAD_FACTOR, ht);
     }
@@ -69,10 +72,11 @@ public class ParsableHashMap<K, V extends Parsable<V>> extends HashMap<K, V> imp
      * @param ht
      */
     public ParsableHashMap(Function<String, K> keyCreateFunction,
-            Function<String, V> valueCreateFunction,
-            int initialCapacity,
-            float loadFactor,
-            HashType ht) {
+                           Function<String, V> valueCreateFunction,
+                           int initialCapacity,
+                           float loadFactor,
+                           HashType ht)
+    {
 
         super(initialCapacity, loadFactor, ht);
         this.keyCreateFunction = keyCreateFunction;
@@ -87,7 +91,8 @@ public class ParsableHashMap<K, V extends Parsable<V>> extends HashMap<K, V> imp
      * @return
      */
     @Override
-    public V put(String dataString) {
+    public V put(String dataString)
+    {
         return super.put(
                 create(keyCreateFunction, dataString, "Nenustatyta raktų kūrimo funkcija"),
                 create(valueCreateFunction, dataString, "Nenustatyta reikšmių kūrimo funkcija")
@@ -100,19 +105,26 @@ public class ParsableHashMap<K, V extends Parsable<V>> extends HashMap<K, V> imp
      * @param filePath
      */
     @Override
-    public void load(String filePath) {
-        if (filePath == null || filePath.length() == 0) {
+    public void load(String filePath)
+    {
+        if (filePath == null || filePath.length() == 0)
+        {
             return;
         }
         clear();
-        try (BufferedReader fReader = Files.newBufferedReader(Paths.get(filePath), Charset.defaultCharset())) {
+        try (BufferedReader fReader = Files.newBufferedReader(Paths.get(filePath), Charset.defaultCharset()))
+        {
             fReader.lines()
                     .map(String::trim)
                     .filter(line -> !line.isEmpty())
                     .forEach(this::put);
-        } catch (FileNotFoundException e) {
+        }
+        catch (FileNotFoundException e)
+        {
             Ks.ern("Tinkamas duomenų failas nerastas: " + e.getLocalizedMessage());
-        } catch (IOException | UncheckedIOException e) {
+        }
+        catch (IOException | UncheckedIOException e)
+        {
             Ks.ern("Failo skaitymo klaida: " + e.getLocalizedMessage());
         }
     }
@@ -124,7 +136,8 @@ public class ParsableHashMap<K, V extends Parsable<V>> extends HashMap<K, V> imp
      * @param filePath
      */
     @Override
-    public void save(String filePath) {
+    public void save(String filePath)
+    {
         throw new UnsupportedOperationException("Saugojimas.. nepalaikomas");
     }
 
@@ -132,13 +145,19 @@ public class ParsableHashMap<K, V extends Parsable<V>> extends HashMap<K, V> imp
      * Atvaizdis spausdinamas į Ks.ouf("");
      */
     @Override
-    public void println() {
-        if (super.isEmpty()) {
+    public void println()
+    {
+        if (super.isEmpty())
+        {
             Ks.oun("Atvaizdis yra tuščias");
-        } else {
+        }
+        else
+        {
             String[][] data = getModelList("=");
-            for (int i = 0; i < data.length; i++) {
-                for (int j = 0; j < data[i].length; j++) {
+            for (int i = 0; i < data.length; i++)
+            {
+                for (int j = 0; j < data[i].length; j++)
+                {
                     String format = (j == 0 | j % 2 == 1) ? "%7s" : "%15s";
                     Object value = data[i][j];
                     Ks.ouf(format, (value == null ? "" : value));
@@ -156,20 +175,24 @@ public class ParsableHashMap<K, V extends Parsable<V>> extends HashMap<K, V> imp
      * @param title
      */
     @Override
-    public void println(String title) {
+    public void println(String title)
+    {
         Ks.ounn("========" + title + "=======");
         println();
         Ks.ounn("======== Atvaizdžio pabaiga =======");
     }
 
     @Override
-    public String[][] getModelList(String delimiter) {
+    public String[][] getModelList(String delimiter)
+    {
         String[][] result = new String[table.length][];
         int count = 0;
-        for (Node<K, V> n : table) {
+        for (Node<K, V> n : table)
+        {
             List<String> list = new ArrayList<>();
             list.add("[ " + count + " ]");
-            while (n != null) {
+            while (n != null)
+            {
                 list.add("-->");
                 list.add(split(n.toString(), delimiter));
                 n = n.next;
@@ -180,15 +203,18 @@ public class ParsableHashMap<K, V extends Parsable<V>> extends HashMap<K, V> imp
         return result;
     }
 
-    private String split(String s, String delimiter) {
+    private String split(String s, String delimiter)
+    {
         int k = s.indexOf(delimiter);
-        if (k <= 0) {
+        if (k <= 0)
+        {
             return s;
         }
         return s.substring(0, k);
     }
 
-    private static <T, R> R create(Function<T, R> function, T data, String errorMessage) {
+    private static <T, R> R create(Function<T, R> function, T data, String errorMessage)
+    {
         return Optional.ofNullable(function)
                 .map(f -> f.apply(data))
                 .orElseThrow(() -> new IllegalStateException(errorMessage));
