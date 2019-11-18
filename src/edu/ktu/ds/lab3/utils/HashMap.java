@@ -22,23 +22,32 @@ public class HashMap<K, V> implements EvaluableMap<K, V>
 
     // Maišos lentelė
     protected Node<K, V>[] table;
+
     // Lentelėje esančių raktas-reikšmė porų kiekis
     protected int size = 0;
+
     // Apkrovimo faktorius
     protected float loadFactor;
+
     // Maišos metodas
     protected HashType ht;
+
     //--------------------------------------------------------------------------
     //  Maišos lentelės įvertinimo parametrai
     //--------------------------------------------------------------------------
+
     // Maksimalus suformuotos maišos lentelės grandinėlės ilgis
     protected int maxChainSize = 0;
+
     // Permaišymų kiekis
     protected int rehashesCounter = 0;
+
     // Paskutinės patalpintos poros grandinėlės indeksas maišos lentelėje
     protected int lastUpdatedChain = 0;
-    // Lentelės grandinėlių skaičius     
+
+    // Lentelės grandinėlių skaičius
     protected int chainsCounter = 0;
+
     // Einamas poros indeksas maišos lentelėje
     protected int index = 0;
 
@@ -144,6 +153,7 @@ public class HashMap<K, V> implements EvaluableMap<K, V>
         {
             throw new IllegalArgumentException("Key or value is null in put(Key key, Value value)");
         }
+
         index = hash(key, ht);
         if (table[index] == null)
         {
