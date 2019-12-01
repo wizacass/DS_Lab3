@@ -99,7 +99,10 @@ public class HashMap<K, V> implements EvaluableMap<K, V>
     {
         for (Node<K, V> n : table)
         {
-            if(n.value.equals(value)) return true;
+            if (n != null)
+            {
+                if (n.value.equals(value)) return true;
+            }
         }
 
         return false;
