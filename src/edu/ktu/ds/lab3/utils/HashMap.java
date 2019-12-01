@@ -1,6 +1,7 @@
 package edu.ktu.ds.lab3.utils;
 
 import java.util.Arrays;
+import java.util.Set;
 
 /**
  * Porų ("maping'ų") raktas-reikšmė objektų kolekcijos - atvaizdžio realizacija
@@ -90,6 +91,33 @@ public class HashMap<K, V> implements EvaluableMap<K, V>
         this.table = new Node[initialCapacity];
         this.loadFactor = loadFactor;
         this.ht = ht;
+    }
+
+    public boolean containsValue(Object value) throws Exception
+    {
+        throw new Exception("Not implemented!");
+    }
+
+    public Set<K> keySet() throws Exception
+    {
+        throw new Exception("Not implemented!");
+    }
+
+    public void putAll(Map<K, V> map) throws Exception
+    {
+        throw new Exception("Not implemented!");
+    }
+
+    public V putIfAbsent(K key, V value)
+    {
+        if(this.contains(key)) return null;
+
+        return this.put(key, value);
+    }
+
+    public int numberOfEmpties()
+    {
+        return getTableCapacity() - size();
     }
 
     /**
@@ -439,7 +467,7 @@ public class HashMap<K, V> implements EvaluableMap<K, V>
         @Override
         public String toString()
         {
-            return key + "=" + value;
+            return key + " = " + value;
         }
     }
 }
