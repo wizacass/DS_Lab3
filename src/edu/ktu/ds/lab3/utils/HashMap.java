@@ -120,12 +120,17 @@ public class HashMap<K, V> implements EvaluableMap<K, V>
         return keySet;
     }
 
-    public void putAll(Map<K, V> map) throws Exception
+    public void putAll(HashMap<K, V> map)
     {
         if (map.isEmpty()) return;
 
-        //TODO: Implement
-        throw new Exception("Not implemented!");
+        var keys = map.keySet();
+
+        for (var key : keys)
+        {
+            var value = map.get(key);
+            this.putIfAbsent(key, value);
+        }
     }
 
     public V putIfAbsent(K key, V value)

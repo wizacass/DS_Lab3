@@ -9,11 +9,13 @@ import java.util.Set;
 public class HashTest
 {
     private HashMap<String, String> hashMap;
+    private HashMap<String, String> otherMap;
     private Random rnd;
 
     public HashTest()
     {
         hashMap = new HashMap<>();
+        otherMap = new HashMap<>();
 
         rnd = new Random();
         rnd.setSeed(2017);
@@ -23,11 +25,15 @@ public class HashTest
     {
         Ks.oun("Hash Table test starting...");
         initialize();
+        initializeSecond();
 
         Ks.oun("Number of empties: " + hashMap.numberOfEmpties());
 
         var keys = hashMap.keySet();
         printKeys(keys);
+
+        hashMap.putAll(otherMap);
+        print("Map after merging:", hashMap);
     }
 
     private void initialize()
@@ -37,13 +43,21 @@ public class HashTest
         hashMap.put("Blockis", "Martynas");
         hashMap.putIfAbsent("Blockis", "Laurynas");
 
-        print("Initial elements:");
+        print("Initial elements:", hashMap);
     }
 
-    private void print(String header)
+    private void initializeSecond()
+    {
+        otherMap.put("Petrauskas", "Jonas");
+        otherMap.put("Jusas", "Vacius");
+
+        print("Initial elements:", otherMap);
+    }
+
+    private void print(String header, HashMap<String, String> map)
     {
         Ks.oun(header);
-        System.out.println(hashMap.toString());
+        System.out.println(map.toString());
     }
 
     private void printKeys(Set<String> keys)
