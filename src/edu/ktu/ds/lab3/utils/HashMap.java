@@ -1,6 +1,8 @@
 package edu.ktu.ds.lab3.utils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -93,18 +95,36 @@ public class HashMap<K, V> implements EvaluableMap<K, V>
         this.ht = ht;
     }
 
-    public boolean containsValue(Object value) throws Exception
+    public boolean containsValue(Object value)
     {
-        throw new Exception("Not implemented!");
+        for (Node<K, V> n : table)
+        {
+            if(n.value.equals(value)) return true;
+        }
+
+        return false;
     }
 
-    public Set<K> keySet() throws Exception
+    public Set<K> keySet()
     {
-        throw new Exception("Not implemented!");
+        var keySet = new HashSet<K>();
+
+        for (Node<K, V> n : table)
+        {
+            if(n != null)
+            {
+                keySet.add(n.key);
+            }
+        }
+
+        return keySet;
     }
 
     public void putAll(Map<K, V> map) throws Exception
     {
+        if (map.isEmpty()) return;
+
+        //TODO: Implement
         throw new Exception("Not implemented!");
     }
 

@@ -4,6 +4,7 @@ import edu.ktu.ds.lab3.utils.HashMap;
 import edu.ktu.ds.lab3.utils.Ks;
 
 import java.util.Random;
+import java.util.Set;
 
 public class HashTest
 {
@@ -24,6 +25,9 @@ public class HashTest
         initialize();
 
         Ks.oun("Number of empties: " + hashMap.numberOfEmpties());
+
+        var keys = hashMap.keySet();
+        printKeys(keys);
     }
 
     private void initialize()
@@ -40,6 +44,15 @@ public class HashTest
     {
         Ks.oun(header);
         System.out.println(hashMap.toString());
+    }
+
+    private void printKeys(Set<String> keys)
+    {
+        Ks.oun("Keys:");
+        for (var key :keys)
+        {
+            System.out.println(key.toString());
+        }
     }
 
     public static void main(String... args)
