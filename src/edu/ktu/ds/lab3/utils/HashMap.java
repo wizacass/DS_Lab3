@@ -1,6 +1,5 @@
 package edu.ktu.ds.lab3.utils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,6 +20,7 @@ public class HashMap<K, V> implements EvaluableMap<K, V>
 {
     public static final int DEFAULT_INITIAL_CAPACITY = 16;
     public static final float DEFAULT_LOAD_FACTOR = 0.75f;
+    public static final float DEFAULT_UNLOAD_FACTOR = 0.25f;
     public static final HashType DEFAULT_HASH_TYPE = HashType.DIVISION;
 
     // Maišos lentelė
@@ -224,7 +224,7 @@ public class HashMap<K, V> implements EvaluableMap<K, V>
 
             if (size > table.length * loadFactor)
             {
-                rehash(table[index]);
+                rehashUp(table[index]);
             }
             else
             {
@@ -293,6 +293,12 @@ public class HashMap<K, V> implements EvaluableMap<K, V>
                 {
                     chainsCounter--;
                 }
+
+                if (size < table.length * DEFAULT_UNLOAD_FACTOR)
+                {
+                    rehashDown(table[index]);
+                }
+
                 return n.value;
             }
             previous = n;
@@ -305,9 +311,20 @@ public class HashMap<K, V> implements EvaluableMap<K, V>
      *
      * @param node
      */
-    private void rehash(Node<K, V> node)
+    private void rehashUp(Node<K, V> node)
     {
         HashMap<K, V> newMap = new HashMap<>(table.length * 2, loadFactor, ht);
+        rehash(node, newMap);
+    }
+
+    private void rehashDown(Node<K, V> node)
+    {
+        HashMap<K, V> newMap = new HashMap<>((int)(table.length * 0.5), loadFactor, ht);
+        rehash(node, newMap);
+    }
+
+    private void rehash(Node<K, V> node, HashMap<K, V> newMap)
+    {
         for (int i = 0; i < table.length; i++)
         {
             while (table[i] != null)

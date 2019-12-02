@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -19,8 +18,10 @@ public class Benchmark
     private HashMap<String, String> ktuMap;
     private java.util.HashMap<String, String> javaMap;
 
-    private final Timekeeper timeKeeper;
-    private final int[] COUNTS = {100, 500, 1000, 2000};
+    private final Timekeeper timeKeeperContains;
+    private final Timekeeper timeKeeperRemove;
+    private final int[] counts_contains = {100, 500, 1000, 2000};
+    private final int[] counts_remove = {100, 500, 1000, 2000, 4000, 8000};
 
     private Random rnd;
 
@@ -29,7 +30,8 @@ public class Benchmark
         ktuMap = new HashMap<>();
         javaMap = new java.util.HashMap<>();
 
-        timeKeeper = new Timekeeper(COUNTS);
+        timeKeeperContains = new Timekeeper(counts_contains);
+        timeKeeperRemove = new Timekeeper(counts_remove);
 
         rnd = new Random();
         rnd.setSeed(2019);
@@ -68,48 +70,75 @@ public class Benchmark
 
     private void benchmark() throws InterruptedException
     {
+        benchmarkContains();
+        benchmarkRemove();
+    }
+
+    private void benchmarkContains() throws InterruptedException
+    {
         try
         {
-            for (var count : COUNTS)
+            for (var count : counts_contains)
             {
                 var words = readFile();
                 initializeMaps(words);
                 var randomWords = initializeRandom(words, count);
-                timeKeeper.startAfterPause();
 
-                timeKeeper.start();
+                timeKeeperContains.startAfterPause();
+                timeKeeperContains.start();
 
                 for (var word: randomWords)
                 {
                     ktuMap.containsValue(word);
                 }
-                timeKeeper.finish("contKtu");
+                timeKeeperContains.finish("contKtu");
 
                 for (var word: randomWords)
                 {
                     javaMap.containsValue(word);
                 }
-                timeKeeper.finish("contJava");
-
-                for (var word: randomWords)
-                {
-                    ktuMap.remove(word);
-                }
-                timeKeeper.finish("remKtu");
-
-                for (var word: randomWords)
-                {
-                    ktuMap.remove(word);
-                }
-                timeKeeper.finish("remJava");
-
-                timeKeeper.seriesFinish();
+                timeKeeperContains.finish("contJava");
+                timeKeeperContains.seriesFinish();
             }
-            timeKeeper.logResult("");
+            timeKeeperContains.logResult("");
         }
         catch (ValidationException e)
         {
-            timeKeeper.logResult(e.getMessage());
+            timeKeeperContains.logResult(e.getMessage());
+        }
+    }
+
+    private void benchmarkRemove() throws InterruptedException
+    {
+        try
+        {
+            for (var count : counts_remove)
+            {
+                var words = readFile();
+                initializeMaps(words);
+                var randomWords = initializeRandom(words, count);
+
+                timeKeeperRemove.startAfterPause();
+                timeKeeperRemove.start();
+
+                for (var word : randomWords)
+                {
+                    ktuMap.remove(word);
+                }
+                timeKeeperRemove.finish("remKtu");
+
+                for (var word : randomWords)
+                {
+                    ktuMap.remove(word);
+                }
+                timeKeeperRemove.finish("remJava");
+                timeKeeperRemove.seriesFinish();
+            }
+            timeKeeperRemove.logResult("");
+        }
+        catch (ValidationException e)
+        {
+            timeKeeperRemove.logResult(e.getMessage());
         }
     }
 
